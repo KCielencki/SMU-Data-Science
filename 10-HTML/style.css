@@ -1,0 +1,16 @@
+.card-header {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.navbar {
+    background-color: darkslategrey;
+}
+
+.image_inline {
+    width: 100%;
+}
+
+.footer_text {
+    align-items: center;
+}

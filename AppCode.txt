@@ -1,7 +1,4 @@
-import datetime as dt
-import numpy as np
-import pandas as pd
-from sqlalchemy import create_engine
+app = Flask(__name__)
 
 class SQLHelper():
 
@@ -10,7 +7,7 @@ class SQLHelper():
         self.engine = create_engine(self.connection_string)
 
     def getPrecipitation(self):
-        qry = f"""
+        query = f"""
             SELECT
                 date,
                 prcp
@@ -21,13 +18,13 @@ class SQLHelper():
             """
 
         conn = self.engine.connect()
-        df = pd.read_sql(qry, conn)
+        df = pd.read_sql(query, conn)
         conn.close()
 
         return df
 
     def getStation(self):
-        qry = f"""
+        query = f"""
             SELECT 
                 station
             FROM
@@ -37,7 +34,7 @@ class SQLHelper():
             """
 
         conn = self.engine.connect()
-        df = pd.read_sql(qry, conn)
+        df = pd.read_sql(query, conn)
         conn.close()
 
         return df
@@ -46,7 +43,7 @@ class SQLHelper():
         qry = f"""
             SELECT
                 date,
-                tobs as temperature
+                tobs
             FROM
                 Measurement
             WHERE
@@ -56,10 +53,8 @@ class SQLHelper():
             """
 
         conn = self.engine.connect()
-        df = pd.read_sql(qry, conn)
+        df = pd.read_sql(query, conn)
         conn.close()
-
-        return df
 
     def getVacation(self):
         qry = f"""
@@ -77,7 +72,20 @@ class SQLHelper():
             """
 
         conn = self.engine.connect()
-        df = pd.read_sql(qry, conn)
+        df = pd.read_sql(query, conn)
         conn.close()
 
-        return df
+@app.route("/")
+def home():
+
+@app.route("/api/v1.0/precipitation")
+def precip():
+    return jsonify(mDf2)
+
+@app.route("/api/v1.0/station")
+def stations():
+    return jsonify(sDf)
+
+@app.route("/api/v1.0/tobs")
+def tobs():
+    return jsonify(activeDf)

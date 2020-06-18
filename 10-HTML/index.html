@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>HTML Homework</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text.css" href="https://bootswatch.com/flatly/">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="index.html">Weathering</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="comparisons.html">Comparison</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="table.html">Data</a>
+                </li>
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-primary">Plots</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                            <a class="dropdown-item" href="temperature.html">Temperature</a>
+                            <a class="dropdown-item" href="humidity.html">Humidity</a>
+                            <a class="dropdown-item" href="cloudiness.html">Cloudiness</a>
+                            <a class="dropdown-item" href="wind_speed.html">Wind Speed</a>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card border-secondary mb-3">
+                    <div class="card-header">Project Summary</div>
+                    <div class="card-body">
+                        <h4 class="card-title"><img class="image_inline" img src="weather.jpg"></h4>
+                        <p class="card-text">The purpose of this project was o analyze how eather change as you get close to the equator. To accomplish this, we first pulled data from the OpenWeatherMao API to assemble a dataset on over 500 cities. After assembling the dataset,
+                            we used MatPlotLib to plot various aspects of the weather vs. the latitude. Factors we looked at included: temperature, cloudiness, humidity and wind speed. The site contains the source data and visualizations created as a
+                            part of the analysis, as well as descriptions of any trends and correlations witnessed.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-secondary mb-3">
+                    <div class="card-header">Visualizations</div>
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6 col-sml-6">
+                                    <a href="temperature.html"><img class="image_inline" img src="Fig1.png"></a>
+                                </div>
+                                <div class="col-md-6 col-sml-6">
+                                    <a href="humidity.html"><img class="image_inline" img src="Fig2.png"></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sml-6">
+                                    <a href="cloudiness.html"><img class="image_inline" img src="Fig3.png"></a>
+                                </div>
+                                <div class="col-md-6 col-sml-6">
+                                    <a href="wind_speed.html"><img class="image_inline" img src="Fig4.png"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <span class="footer_text">Cielencki & Partners Global, Inc, LLC, LP, LLP, LLLP, SaRL, </span>
+        </div>
+    </footer>
+</body>
