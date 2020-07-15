@@ -1,20 +1,20 @@
 // from data.js
 var tableData = data;
 
-// Select the button
+// Select the Button
 var button = d3.select("#filter-btn");
 
 // Select the form
 var form = d3.select("#form");
 
-// Create event handlers 
+// Event handlers 
 button.on("click", runEnter);
 form.on("submit", runEnter);
 
-// initial load of page, show all data
+// Initial Page Load
 runEnter();
 
-// Complete the event handler function for the form
+// Event Handler
 function runEnter() {
 
     // Prevent the page from refreshing
@@ -35,7 +35,20 @@ function runEnter() {
         sub_data = tableData.filter(x => x.datetime === inputValue);
     }
 
-    // YOUR CODE HERE!
+    function runStateFilter() {
+        var states = [...new Set(tableData.map(x => x.state))];
+        states.sort();
+
+        states.forEach(function(state) {
+            let stateOptions = `<option>${state}</option>`
+            select("#stateFilter").append(stateOptions)
+        });
+    }
+
+
+
+
+    // Loading Data
     var table = d3.select("#ufo-table");
     table.select('tbody').html("");
     sub_data.forEach(function(ufo) {
