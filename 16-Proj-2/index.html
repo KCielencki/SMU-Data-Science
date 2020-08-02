@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UFO Sightings</title>
+    <title>Shootings in New York</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -14,35 +15,43 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 jumbotron text-center">
-                <h1>UFO Sightings</h1>
-                <p>The truth is out there</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <div class="well">
-                    <h5>Test Subject ID No.:</h5>
-                    <select id="selDataset" onchange="optionChanged(this.value)"></select>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Demographic Info</h3>
-                    </div>
-                    <div id="sample-metadata" class="panel-body"></div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div id="bar"></div>
-            </div>
-            <div class="col-md-5">
-                <div id="gauge"></div>
+                <h1>Shootings in New York</h1>
+                <p></p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div id="bubble"></div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Shootings By Borough</h1>
+                    </div>
+                    <div id="sample-metadata" class="panel-body"></div>
+                </div>
             </div>
         </div>
+        <div class="row">
+            <select id="yearFilter">
+                <option>2020</option>
+                <option>2019</option>
+                <option selected>2018</option>
+                <option>2017</option>
+                <option>2016</option>
+                <option>2015</option>
+                <option>2014</option>
+                <option>2013</option>
+                <option>2012</option>
+                <option>2011</option>
+                <option>2010</option>
+                <option>2009</option>
+                <option>2008</option>
+                <option>2007</option>
+                <option>2006</option>
+            </select>
+            <div class="col-md-12">
+                <div id="bar"></div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
