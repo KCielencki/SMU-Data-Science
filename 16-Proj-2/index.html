@@ -6,31 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Shootings in New York</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/flatly/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="index.html" style="font-size: 30px">Shootings in New York City</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 jumbotron text-center">
-                <h1>Shootings in New York</h1>
-                <p></p>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-home">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-data">
+                    <a class="nav-link" href="#">Data</a>
+                </li>
+                <li class="nav-about active">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h1 class="panel-title">Shootings By Borough</h1>
-                    </div>
-                    <div id="sample-metadata" class="panel-body"></div>
+    </nav>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Shootings By Borough</h1>
                 </div>
+                <div id="sample-metadata" class="panel-body"></div>
             </div>
         </div>
-        <div class="row">
-            <select id="yearFilter">
+    </div>
+    <div class="row">
+        <select id="yearFilter">
                 <option>2020</option>
                 <option>2019</option>
                 <option selected>2018</option>
@@ -47,10 +59,10 @@
                 <option>2007</option>
                 <option>2006</option>
             </select>
-            <div class="col-md-12">
-                <div id="bar"></div>
-            </div>
+        <div class="col-md-12">
+            <div id="bar"></div>
         </div>
+    </div>
     </div>
     </div>
 
