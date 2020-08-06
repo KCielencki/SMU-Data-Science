@@ -80,8 +80,7 @@ function makeMap() {
         }),
     };
 
-
-    // TODO:
+    // Shootings Markers:
     var url = "https://data.cityofnewyork.us/resource/833y-fsy8.json";
 
     d3.json(url).then(function(response) {
@@ -141,7 +140,6 @@ function makeMap() {
             }
 
         });
-
 
         //create heatmap layer
         var heat = L.heatLayer(heatArray, {
@@ -239,7 +237,7 @@ function makeBoroChart(year) {
             name: 'NonFatal Shootings',
             type: 'bar',
             marker: {
-                color: 'rgb(165,0,0)'
+                color: 'rgb(166, 166, 166)'
             }
         };
 
@@ -249,7 +247,7 @@ function makeBoroChart(year) {
             name: 'Fatal Shootings',
             type: 'bar',
             marker: {
-                color: 'rgb(198, 36, 28)'
+                color: 'rgb(165,0,0)'
             }
         };
 
@@ -257,7 +255,17 @@ function makeBoroChart(year) {
 
         var layout = {
             title: 'Total Shootings By Borough',
-            barmode: 'stack'
+            barmode: 'stack',
+            xaxis: {
+                title: {
+                  text: 'Borough'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Shootings (Fatal/Non-Fatal)'
+                }
+            }
         };
 
         Plotly.newPlot('bar', data, layout);
@@ -297,7 +305,7 @@ function makeAgeChart(year) {
             orientation: 'h',
             type: 'bar',
             marker: {
-                color: 'rgb(165,0,0)'
+                color: 'rgb(166, 166, 166)'
             }
         };
         var trace2 = {
@@ -307,13 +315,23 @@ function makeAgeChart(year) {
             orientation: 'h',
             type: 'bar',
             marker: {
-                color: 'rgb(198, 36, 28)'
+                color: 'rgb(165,0,0)'
             }
         };
         var data = [trace1, trace2];
         var layout = {
             title: 'Total Shootings By Age Group',
-            barmode: 'stack'
+            barmode: 'stack',
+            xaxis: {
+                title: {
+                  text: 'Shootings (Fatal/Non-Fatal)'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Age Group'
+                }
+            }
         };
         Plotly.newPlot('h-bar', data, layout);
     });
