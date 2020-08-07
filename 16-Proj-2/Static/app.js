@@ -80,11 +80,24 @@ function makeMap() {
         }),
     };
 
+    //Create Boro Outlines
+    var boroOutlines = "Static/Map/boros.geojson"
+
+    d3.json(boroOutlines, function(boundaries) {
+        L.geoJson(boundaries, {
+            style: function(feature) {
+                return {
+                    color: "orange",
+                    weight: 1
+                };
+            }
+        })
+    });
+
     // Shootings Markers:
     var url = "https://data.cityofnewyork.us/resource/833y-fsy8.json";
 
     d3.json(url).then(function(response) {
-                console.log(response);
 
                 //create markers and heatmap
                 var murd = L.markerClusterGroup();
@@ -157,6 +170,7 @@ function makeMap() {
 
         // Create an overlayMaps object here to contain the "State Population" and "City Population" layers
         var overlayMaps = {
+            //"Boros": boroLayer,
             "Heatmap": heat,
             "All Shootings": markers,
             "Fatalities": murd,
@@ -185,7 +199,7 @@ function makeMap() {
                 },
             ]
         };
-
+    
         // Creating map object
         var myMap = L.map("map", {
             center: [40.73, -74.0059],
@@ -198,9 +212,9 @@ function makeMap() {
         //myMap.addLayer(murd, noMurd);
         //L.control.layers.tree(baseTree).addTo(myMap);
         L.control.layers(baseMaps, overlayMaps).addTo(myMap);
-
-    });
+});
 }
+
 
 function makeBoroChart(year) {
     d3.select("#bar").empty();
@@ -283,7 +297,6 @@ function makeAgeChart(year) {
     var ages = []
     var fatalities = []
     d3.json(fullUrl).then(function(response) {
-        console.log(data);
         var ages = response.map(x => x.vic_age_group);
         ages = [...new Set(ages)];
         var murderData = {};
@@ -292,7 +305,6 @@ function makeAgeChart(year) {
             let specAge = response.filter(x => x.vic_age_group === ages);
             let totalFatals = specAge.map(x => x.statistical_murder_flag).reduce((a, b) => a + b);
             murderData[ages] = totalFatals;
-            console.log(ages);
             let nonFatals = specAge.length - totalFatals;
             nonFatalData[ages] = nonFatals;
         });
@@ -347,7 +359,6 @@ function updateYear() {
             allDates.push(date[0])
         })
         var allYears = [...new Set(allDates)]
-        console.log(allYears)
         
         sortYears = allYears.sort(function(a, b){return b - a});
 
