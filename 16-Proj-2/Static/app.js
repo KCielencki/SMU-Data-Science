@@ -2,12 +2,14 @@ $(document).ready(function() {
     updateYear();
     makeBoroChart(2018);
     makeAgeChart(2018);
+    makeLineChart(2018);
     makeMap();
 
     $('#yearFilter').change(function() {
         let year = $(this).val();
         makeBoroChart(year);
         makeAgeChart(year);
+        makeLineChart(year);
     })
 });
 
@@ -137,7 +139,7 @@ function makeMap() {
         });
 
         response.forEach(function(gender) {
-            if (gender.vic_sex === "M") {
+            if (gender.vic_sex === "MALE") {
                 let male = L.marker([+gender.latitude, +gender.longitude], {
                     icon: icons.maleIcon,
                 }).bindPopup(`<h5>${gender.location_desc}</h5><hr><h5>Borough: ${gender.boro}</h5><br><h5>Date: ${gender.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${gender.vic_race}</h5><br><h5>Victim Sex: ${gender.vic_sex}</h5><br><h5>Deaths: ${gender.statistical_murder_flag}</h5>`);
@@ -243,7 +245,6 @@ function makeMap() {
     });
 });
 }
-
 
 function makeBoroChart(year) {
     d3.select("#bar").empty();
@@ -375,6 +376,75 @@ function makeAgeChart(year) {
             }
         };
         Plotly.newPlot('h-bar', data, layout);
+    });
+};
+
+function makeLineChart(year) {
+    d3.select("#line-graph").empty();
+    d3.select("#line-graph").append();
+    
+    url = "https://data.cityofnewyork.us/resource/833y-fsy8.json?"
+    
+    var date = `$where=occur_date%20between%20%27${year}-01-01T00:00:00%27%20and%20%27${year+1}-01-01T00:00:00%27`;
+    var fullUrl = url + date;
+    //var dropdown = d3.select("#yearFilter");
+    //dropdown.empty();
+    var timeline = []
+    var fatalities = []
+    
+    d3.json(fullUrl).then(function(response) {
+        var timeline = response.map(x => x.occur_date);
+        timeline = [...new Set(timeline)];
+        var murderData = {};
+        var nonFatalData = {};
+        timeline.forEach(timeline => {
+            let spectimeline = response.filter(x => x.occur_date === timeline);
+            let totalFatals = spectimeline.map(x => x.statistical_murder_flag).reduce((a, b) => a + b);
+            murderData[timeline] = totalFatals;
+            let nonFatals = spectimeline.length - totalFatals;
+            nonFatalData[timeline] = nonFatals;
+        });
+        let months = Object.keys(nonFatalData).map(x => (new Date(x)).getMonth());
+        months = [...new Set(months)];
+        let nonFatalDataMonth = {};
+        let murderDataMonth = {};
+        months.forEach(month => {
+            let spectimeline = response.filter(x => (new Date(x.occur_date)).getMonth() === month);
+            let totalFatals = spectimeline.map(x => x.statistical_murder_flag).reduce((a, b) => a + b);
+            murderDataMonth[month] = totalFatals;
+            //console.log(boroughs);
+            let nonFatals = spectimeline.length - totalFatals;
+            nonFatalDataMonth[month] = nonFatals;
+        });
+
+        var monthsAxis = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        //x = plotData_Sorted.map(x => x[1]).slice(0, 10).reverse() //[1] corresponds to the sample_value
+        //y = plotData_Sorted.map(x => "OTU " + x[0]).slice(0, 10).reverse() //[0] corresponds to the OTU ID (the OTU is neccessary to append)
+        var trace1 = {
+            x: monthsAxis,
+            y: Object.values(nonFatalDataMonth),
+            name: 'NonFatal Shootings',
+            type: 'line',
+            marker: {
+                color: 'rgb(165, 0, 0)'
+            }
+        };
+        var trace2 = {
+            x: monthsAxis,
+            y: Object.values(murderDataMonth),
+            name: 'Fatal Shootings',
+            type: 'line',
+            marker: {
+                color: 'rgb(166, 166, 166)'
+            }
+        };
+        var data = [trace1, trace2];
+        var layout = {
+            title: 'Total Shootings By Year',
+            xaxis: { title: "Month" },
+            yaxis: { title: "Shooting count" }
+        };
+        Plotly.newPlot('line-graph', data, layout);
     });
 };
 
