@@ -80,24 +80,23 @@ function makeMap() {
         }),
     };
 
-    //Create Boro Outlines
-    var boroOutlines = "Static/Map/boros.geojson"
-
-    d3.json(boroOutlines, function(boundaries) {
-        L.geoJson(boundaries, {
-            style: function(feature) {
-                return {
-                    color: "orange",
-                    weight: 1
-                };
-            }
-        })
-    });
-
     // Shootings Markers:
     var url = "https://data.cityofnewyork.us/resource/833y-fsy8.json";
 
     d3.json(url).then(function(response) {
+
+                response.forEach(function(d) {
+                    if (d.vic_sex === "M") {
+                        d.vic_sex = "MALE";
+                    } else {
+                        d.vic_sex = "FEMALE";
+                    }
+                    if (response.statistical_murder_flag === true) {
+                        d.statistical_murder_flag = "YES";
+                    } else {
+                        d.statistical_murder_flag = "NO";
+                    }
+                })
 
                 //create markers and heatmap
                 var murd = L.markerClusterGroup();
@@ -111,13 +110,13 @@ function makeMap() {
                             if (murder.statistical_murder_flag === true) {
                                 let yes = L.marker([+murder.latitude, +murder.longitude], {
                                         icon: icons.deaths,
-                                    }).bindPopup(`<h3>${murder.location_desc}</h3><hr><h5>Borough: ${murder.boro}</h5><br><h5>Date: ${murder.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${murder.vic_race}</h5><br><h5>Victim Sex: ${murder.vic_sex}</h5><br><h5>Deaths: ${murder.statistical_murder_flag}</h5>`);
+                                    }).bindPopup(`<h5>${murder.location_desc}</h5><p>Borough: ${murder.boro}</p><p>Date: ${murder.occur_date.split(`T`)[0]}</p><p>Victim Race: ${murder.vic_race}</p><p>Victim Sex: ${murder.vic_sex}</p><p>Deaths: ${murder.statistical_murder_flag}</p>`);
                 murd.addLayer(yes);
                 heatArray.push([+murder.latitude, +murder.longitude]);
             } else {
                 let no = L.marker([+murder.latitude, +murder.longitude], {
                     icon: icons.noDeaths,
-                }).bindPopup(`<h3>${murder.location_desc}</h3><hr><h5>Borough: ${murder.boro}</h5><br><h5>Date: ${murder.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${murder.vic_race}</h5><br><h5>Victim Sex: ${murder.vic_sex}</h5><br><h5>Deaths: ${murder.statistical_murder_flag}</h5>`);
+                }).bindPopup(`<h5>${murder.location_desc}</h5><p>Borough: ${murder.boro}</p><p>Date: ${murder.occur_date.split(`T`)[0]}</p><p>Victim Race: ${murder.vic_race}</p><p>Victim Sex: ${murder.vic_sex}</p><p>Deaths: ${murder.statistical_murder_flag}</p>`);
                 noMurd.addLayer(no);
                 heatArray.push([+murder.latitude, +murder.longitude]);
             }
@@ -129,7 +128,7 @@ function makeMap() {
                 //marker for cluster
                 let temp = L.marker([+shoot.latitude, +shoot.longitude], {
                     icon: icons.all,
-                }).bindPopup(`<h3>${shoot.location_desc}</h3><hr><h5>Borough: ${shoot.boro}</h5><br><h5>Date: ${shoot.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${shoot.vic_race}</h5><br><h5>Victim Sex: ${shoot.vic_sex}</h5><br><h5>Deaths: ${shoot.statistical_murder_flag}</h5>`);
+                }).bindPopup(`<h5>${shoot.location_desc}</h5><p>Borough: ${shoot.boro}</p><p>Date: ${shoot.occur_date.split(`T`)[0]}</p><p>Victim Race: ${shoot.vic_race}</p><p>Victim Sex: ${shoot.vic_sex}</p><p>Deaths: ${shoot.statistical_murder_flag}</p>`);
                 markers.addLayer(temp);
 
                 //heatmap points
@@ -141,18 +140,49 @@ function makeMap() {
             if (gender.vic_sex === "M") {
                 let male = L.marker([+gender.latitude, +gender.longitude], {
                     icon: icons.maleIcon,
-                }).bindPopup(`<h3>${gender.location_desc}</h3><hr><h5>Borough: ${gender.boro}</h5><br><h5>Date: ${gender.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${gender.vic_race}</h5><br><h5>Victim Sex: ${gender.vic_sex}</h5><br><h5>Deaths: ${gender.statistical_murder_flag}</h5>`);
+                }).bindPopup(`<h5>${gender.location_desc}</h5><hr><h5>Borough: ${gender.boro}</h5><br><h5>Date: ${gender.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${gender.vic_race}</h5><br><h5>Victim Sex: ${gender.vic_sex}</h5><br><h5>Deaths: ${gender.statistical_murder_flag}</h5>`);
                 genderM.addLayer(male);
                 heatArray.push([+gender.latitude, +gender.longitude]);
             } else {
                 let female = L.marker([+gender.latitude, +gender.longitude], {
                     icon: icons.femaleIcon,
-                }).bindPopup(`<h3>${gender.location_desc}</h3><hr><h5>Borough: ${gender.boro}</h5><br><h5>Date: ${gender.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${gender.vic_race}</h5><br><h5>Victim Sex: ${gender.vic_sex}</h5><br><h5>Deaths: ${gender.statistical_murder_flag}</h5>`);
+                }).bindPopup(`<h5>${gender.location_desc}</h5><hr><h5>Borough: ${gender.boro}</h5><br><h5>Date: ${gender.occur_date.split(`T`)[0]}</h5><br><h5>Victim Race: ${gender.vic_race}</h5><br><h5>Victim Sex: ${gender.vic_sex}</h5><br><h5>Deaths: ${gender.statistical_murder_flag}</h5>`);
                 genderF.addLayer(female);
                 heatArray.push([+gender.latitude, +gender.longitude]);
             }
 
         });
+
+        //Create Boro Outlines
+        var boroOutlines = "Static/Map/boros.geojson"
+
+        function chooseColor(borough) {
+            switch (borough) {
+                case "Brooklyn":
+                    return "yellow";
+                case "Bronx":
+                    return "red";
+                case "Manhattan":
+                    return "orange";
+                case "Queens":
+                    return "green";
+                case "Staten Island":
+                    return "purple";
+                default:
+                    return "black";
+            }
+        }        
+
+    d3.json(boroOutlines).then(function(boundaries) {
+            var boroLayer = L.geoJson(boundaries, {
+                style: function(feature) {
+                    return {
+                        color: chooseColor(feature.properties.borough),
+                        fillOpacity: 0.009,
+                        weight: 1
+                    }
+                },
+            })
 
         //create heatmap layer
         var heat = L.heatLayer(heatArray, {
@@ -170,7 +200,7 @@ function makeMap() {
 
         // Create an overlayMaps object here to contain the "State Population" and "City Population" layers
         var overlayMaps = {
-            //"Boros": boroLayer,
+            "Boros": boroLayer,
             "Heatmap": heat,
             "All Shootings": markers,
             "Fatalities": murd,
@@ -209,9 +239,8 @@ function makeMap() {
         });
 
         // Create a layer control, containing our baseMaps and overlayMaps, and add them to the map
-        //myMap.addLayer(murd, noMurd);
-        //L.control.layers.tree(baseTree).addTo(myMap);
         L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+    });
 });
 }
 
